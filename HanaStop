@@ -1,0 +1,15 @@
+#! /bin/bash
+
+sudo su - hs5adm -c "/usr/sap/HS5/HDB01/HDB stop"
+sleep 40
+
+case "$(pidof hdbindexserver | wc -w)" in
+
+0) echo "Service is sucessfully stopped hence we can proceed with instance shutdown"
+   aws lambda invoke --invocation-type RequestResponse --function-name Hanastop --region us-east-1 --log-type Tail outfile
+   ;;
+1) echo "Service is still running so we can not initiate the autoshutdown of HANA instance. Kindly login to server and initiate manual shutdown"
+   aws sns publish --topic-arn arn:aws:sns:us-east-1:662206690138:sapscript --message "Service is still running so we can not initiate the autoshutdown of HANA instance. Kindly login to server and initiate manual shutdown"
+   ;;
+esac
+ 

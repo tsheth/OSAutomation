@@ -1,0 +1,14 @@
+#! /bin/bash
+
+sudo su - hs5adm -c "/usr/sap/HS5/HDB01/HDB start"
+sleep 40
+
+case "$(pidof hdbindexserver | wc -w)" in
+
+0) echo "Service is still not started hence You need to login to server the check the service status manualy"
+  aws sns publish --topic-arn arn:aws:sns:us-east-1:662206690138:sapscript --message "Service is still not started hence You need to login to server the check the service status manualy"
+   ;;
+1) echo "Hana service has been started sucessfully on Hana server."
+   aws sns publish --topic-arn arn:aws:sns:us-east-1:662206690138:sapscript --message "Hana service has been started sucessfully on Hana server."
+   ;;
+esac

@@ -1,0 +1,3 @@
+#Defaults requiretty
+
+hs5adm	ALL=(ALL)	NOPASSWD: ALL
